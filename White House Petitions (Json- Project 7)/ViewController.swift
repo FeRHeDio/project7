@@ -21,6 +21,11 @@ class ViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        performSelector(inBackground: #selector(fetchJson), with: nil)
+        
+    }
+    
+    @objc func fetchJson(){
         
         if navigationController?.tabBarItem.tag == 0 {
             whiteHouseURL = "https://api.whitehouse.gov/v1/petitions.json?limit=100"
@@ -28,33 +33,30 @@ class ViewController: UITableViewController {
             whiteHouseURL = "https://api.whitehouse.gov/v1/petitions.json?signatureCountFloor=10000&limit=100"
         }
         
-        if let url = URL(string: whiteHouseURL) {
-            if let data = try? Data(contentsOf: url) {
-                parseJson(json: data)
-                
-                return
+        if let url = URL(string: self.whiteHouseURL) {
+                if let data = try? Data(contentsOf: url) {
+                    parseJson(json: data)
+                    return
             }
-            
-            showError()
         }
+        performSelector(onMainThread: #selector(showError), with: nil, waitUntilDone: false)
         
     }
     
-    func showError(){
-        
-        let alertError = UIAlertController(title: "Loading error", message: "there was a problem loading the feed", preferredStyle: .alert)
+    
+    @objc func showError(){
+        let alertError = UIAlertController(title: "Loading error", message: "There was a problem loading the feed", preferredStyle: .alert)
         alertError.addAction(UIAlertAction(title: "OK", style: .default))
         present(alertError, animated: true)
-        
     }
     
-    func parseJson(json: Data) {
-        
+    
+    @objc func parseJson(json: Data) {
+    
         let decoder = JSONDecoder()
-        
         if let jsonPetitions = try? decoder.decode(Petitions.self, from: json) {
             petitions = jsonPetitions.results
-            tableView.reloadData()
+                tableView.reloadData()
         }
     }
     
