@@ -10,13 +10,8 @@ import UIKit
 
 class ViewController: UITableViewController {
     
-    // MARK: - Properties
-    
     var petitions = [Petition]()
-    
     var whiteHouseURL = ""
-    
-    // MARK: - VDL
     
     override func viewDidLoad() {
         super.viewDidLoad()
