@@ -43,20 +43,20 @@ class ViewController: UITableViewController {
         
     }
     
-    
     @objc func showError(){
         let alertError = UIAlertController(title: "Loading error", message: "There was a problem loading the feed", preferredStyle: .alert)
         alertError.addAction(UIAlertAction(title: "OK", style: .default))
         present(alertError, animated: true)
     }
     
-    
-    @objc func parseJson(json: Data) {
+    func parseJson(json: Data) {
     
         let decoder = JSONDecoder()
         if let jsonPetitions = try? decoder.decode(Petitions.self, from: json) {
             petitions = jsonPetitions.results
-                tableView.reloadData()
+            tableView.performSelector(onMainThread: #selector(UITableView.reloadData), with: nil, waitUntilDone: false)
+        } else {
+            performSelector(onMainThread: #selector(showError), with: nil, waitUntilDone: false)
         }
     }
     
