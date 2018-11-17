@@ -24,8 +24,11 @@ class ViewController: UITableViewController {
         
         if navigationController?.tabBarItem.tag == 0 {
             whiteHouseURL = "https://api.whitehouse.gov/v1/petitions.json?limit=100"
+            navigationItem.title = "Most Recent"
+            
         } else {
             whiteHouseURL = "https://api.whitehouse.gov/v1/petitions.json?signatureCountFloor=10000&limit=100"
+            navigationItem.title = "Most Signed"
         }
         
         if let url = URL(string: self.whiteHouseURL) {
