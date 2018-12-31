@@ -45,6 +45,8 @@ class DetailViewController: UIViewController {
             </ br>
                 <footer>
         <p> Votes: \(detailItem.signatureCount)</p>
+        <p> ID: \(detailItem.id)</p>
+        <p> Status: \(detailItem.status)</p>
                 </footer>
                 </body>
         </html>

@@ -31,9 +31,10 @@ class ViewController: UITableViewController {
             navigationItem.title = "Most Signed"
         }
         
-        if let url = URL(string: self.whiteHouseURL) {
+        if let url = URL(string: whiteHouseURL) {
                 if let data = try? Data(contentsOf: url) {
                     parseJson(json: data)
+                   // print(data) //get rid of
                     return
             }
         }
@@ -41,16 +42,11 @@ class ViewController: UITableViewController {
         
     }
     
-    @objc func showError(){
-        let alertError = UIAlertController(title: "Loading error", message: "There was a problem loading the feed", preferredStyle: .alert)
-        alertError.addAction(UIAlertAction(title: "OK", style: .default))
-        present(alertError, animated: true)
-    }
-    
     func parseJson(json: Data) {
-    
+        
         let decoder = JSONDecoder()
         if let jsonPetitions = try? decoder.decode(Petitions.self, from: json) {
+            print(jsonPetitions)
             petitions = jsonPetitions.results
             tableView.performSelector(onMainThread: #selector(UITableView.reloadData), with: nil, waitUntilDone: false)
         } else {
@@ -58,6 +54,15 @@ class ViewController: UITableViewController {
         }
     }
     
+    // MARK: - Error Handler
+    
+    @objc func showError(){
+        let alertError = UIAlertController(title: "Loading error", message: "There was a problem loading the feed", preferredStyle: .alert)
+        alertError.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alertError, animated: true)
+    }
+    
+
     
     //MARK: - Table Data Source
     
